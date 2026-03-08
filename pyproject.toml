@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-finops-optimization-agent"
+version = "0.1.0"
+description = "Multi-cloud FinOps agent for cost analysis, anomaly detection, rightsizing, and optimization."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+dependencies = [
+    "langchain>=0.3.0,<0.4.0",
+    "langchain-core>=0.3.0,<0.4.0",
+    "langchain-openai>=0.2.0,<0.3.0",
+    "openai>=1.40.0,<2.0.0",
+    "pydantic>=2.7.0,<3.0.0",
+    "python-dotenv>=1.0.0,<2.0.0",
+    "requests>=2.31.0,<3.0.0",
+]
+
+[project.optional-dependencies]
+aws = [
+    "boto3>=1.34.0,<2.0.0",
+]
+azure = [
+    "azure-identity>=1.16.0,<2.0.0",
+    "azure-mgmt-costmanagement>=4.0.0,<5.0.0",
+    "azure-mgmt-compute>=32.0.0,<33.0.0",
+    "azure-mgmt-monitor>=6.0.0,<7.0.0",
+]
+gcp = [
+    "google-cloud-billing>=1.13.0,<2.0.0",
+    "google-cloud-compute>=1.18.0,<2.0.0",
+    "google-cloud-monitoring>=2.21.0,<3.0.0",
+    "google-cloud-bigquery>=3.23.0,<4.0.0",
+]
+all-clouds = [
+    "ai-finops-optimization-agent[aws,azure,gcp]",
+]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.5.0",
+    "mypy>=1.10.0",
+    "moto>=5.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
