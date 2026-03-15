@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture - ai-finops-optimization-agent</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0b0c0b;color:#f5f2eb;font-family:'SF Mono','Fira Code','Cascadia Code',Consolas,monospace;line-height:1.6;padding:0}
+a{color:#c8420a;text-decoration:none}a:hover{text-decoration:underline}
+.container{max-width:1200px;margin:0 auto;padding:2rem}
+h1{font-size:2rem;color:#f5f2eb;margin-bottom:0.5rem}
+h2{font-size:1.4rem;color:#c8420a;margin:2rem 0 1rem;padding-bottom:0.5rem;border-bottom:1px solid #222}
+h3{font-size:1.1rem;color:#f5f2eb;margin:1.5rem 0 0.75rem}
+.badge{display:inline-block;padding:0.25rem 0.75rem;border-radius:4px;font-size:0.8rem;font-weight:600;margin-right:0.5rem;margin-bottom:0.5rem}
+.badge-lang{background:#1a3a1a;color:#4ade80;border:1px solid #2d5a2d}
+.badge-cat{background:#1a1a3a;color:#60a5fa;border:1px solid #2d2d5a}
+.badge-ver{background:#3a1a1a;color:#f87171;border:1px solid #5a2d2d}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1rem 0}
+.card{background:#141514;border:1px solid #222;border-radius:8px;padding:1.25rem;text-align:center}
+.card-value{font-size:1.5rem;color:#c8420a;font-weight:700}
+.card-label{font-size:0.8rem;color:#888;margin-top:0.25rem}
+.arch-diagram{background:#101210;border:1px solid #222;border-radius:8px;padding:2rem;margin:1rem 0;overflow-x:auto}
+.flow-row{display:flex;justify-content:center;align-items:center;gap:0.5rem;margin:0.75rem 0;flex-wrap:wrap}
+.flow-box{background:#1a1a2e;border:2px solid #c8420a;border-radius:6px;padding:0.5rem 1rem;font-size:0.8rem;text-align:center;min-width:120px;color:#f5f2eb}
+.flow-box.accent{background:#c8420a;color:#fff;border-color:#e8520a}
+.flow-box.blue{border-color:#1982c4;background:#0f1f3a}
+.flow-box.green{border-color:#2b9348;background:#0f2a1a}
+.flow-box.purple{border-color:#533483;background:#1a0f2e}
+.flow-box.orange{border-color:#e36414;background:#2a1a0a}
+.flow-arrow{color:#c8420a;font-size:1.2rem;font-weight:bold}
+.flow-arrow-down{display:flex;justify-content:center;color:#c8420a;font-size:1.2rem;font-weight:bold}
+.flow-label{font-size:0.7rem;color:#888;display:block}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:0.85rem}
+th{background:#1a1a1a;color:#c8420a;padding:0.75rem;text-align:left;border-bottom:2px solid #333;white-space:nowrap}
+td{padding:0.75rem;border-bottom:1px solid #1a1a1a}
+tr:hover{background:#141514}
+code{background:#1a1a1a;padding:0.15rem 0.4rem;border-radius:3px;font-size:0.85rem;color:#e8a060}
+.checklist{list-style:none;padding:0}
+.checklist li{padding:0.4rem 0;padding-left:1.5rem;position:relative}
+.checklist li::before{content:'[ ]';position:absolute;left:0;color:#c8420a;font-weight:bold}
+.section-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+.section-box{background:#141514;border:1px solid #222;border-radius:8px;padding:1.25rem}
+.section-box h3{margin-top:0}
+footer{margin-top:3rem;padding:1.5rem 0;border-top:1px solid #222;text-align:center;font-size:0.75rem;color:#555}
+.env-table td:first-child{color:#4ade80}
+.header-bar{background:#141514;border-bottom:1px solid #222;padding:1.5rem 0}
+.header-bar .container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.industry-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.industry-card{background:#141514;border:1px solid #222;border-radius:8px;padding:1rem}
+.industry-card h4{color:#c8420a;margin-bottom:0.5rem;font-size:0.95rem}
+.industry-card p{font-size:0.8rem;color:#aaa}
+</style>
+</head>
+<body>
+
+<div class="header-bar">
+<div class="container">
+<div>
+<h1>ai-finops-optimization-agent</h1>
+<p style="color:#888;margin-top:0.25rem">Multi-cloud FinOps agent for cost analysis, anomaly detection, rightsizing, and optimization</p>
+</div>
+<div>
+<span class="badge badge-lang">Python 3.11+</span>
+<span class="badge badge-cat">AI/ML</span>
+<span class="badge badge-ver">v0.1.0</span>
+</div>
+</div>
+</div>
+
+<div class="container">
+
+<h2>Executive Summary</h2>
+<p>A multi-cloud FinOps agent that analyzes costs across AWS, Azure, and GCP using cloud-native billing APIs and LLM-powered anomaly detection. The agent identifies optimization opportunities including instance rightsizing based on CPU utilization, reserved instance and savings plan recommendations, and waste elimination for idle/orphaned resources. It includes safe execution capabilities with dry-run support for resource cleanup, start/stop scheduling for non-production workloads, and reservation purchase workflows with approval gates. Reporting is delivered via Slack webhooks, HTML email, and JSON dashboard exports.</p>
+
+<h2>Overview</h2>
+<div class="cards">
+<div class="card"><div class="card-value">Python</div><div class="card-label">Language</div></div>
+<div class="card"><div class="card-value">AI/ML</div><div class="card-label">Category</div></div>
+<div class="card"><div class="card-value">16</div><div class="card-label">Core Dependencies</div></div>
+<div class="card"><div class="card-value">12</div><div class="card-label">Source Modules</div></div>
+<div class="card"><div class="card-value">3</div><div class="card-label">Cloud Providers</div></div>
+<div class="card"><div class="card-value">MIT</div><div class="card-label">License</div></div>
+</div>
+
+<h2>Architecture Diagram</h2>
+<div class="arch-diagram">
+<div class="flow-row">
+<div class="flow-box orange">AWS Cost Explorer<br><span class="flow-label">boto3 + CloudWatch</span></div>
+<div class="flow-box blue">Azure Cost Mgmt<br><span class="flow-label">azure-mgmt SDK</span></div>
+<div class="flow-box green">GCP Billing<br><span class="flow-label">BigQuery + Compute</span></div>
+</div>
+<div class="flow-label" style="text-align:center">Cost Data Collectors</div>
+<div class="flow-arrow-down">v v v</div>
+<div class="flow-row">
+<div class="flow-box accent">FinOps Agent<br><span class="flow-label">Main Orchestrator</span></div>
+</div>
+<div class="flow-arrow-down">v</div>
+<div class="flow-row">
+<div class="flow-box accent">Anomaly Detector<br><span class="flow-label">Z-Score + LLM</span></div>
+<div class="flow-box purple">Rightsizing<br><span class="flow-label">CPU Utilization</span></div>
+<div class="flow-box orange">RI/SP Advisor<br><span class="flow-label">Usage Patterns</span></div>
+<div class="flow-box blue">Waste Finder<br><span class="flow-label">Idle + Orphaned</span></div>
+</div>
+<div class="flow-label" style="text-align:center">Cost Analyzers</div>
+<div class="flow-arrow-down">v v v v</div>
+<div class="flow-row">
+<div class="flow-box green">Scheduler<br><span class="flow-label">Start/Stop</span></div>
+<div class="flow-box accent">Cleanup<br><span class="flow-label">Safe Deletion</span></div>
+<div class="flow-box purple">Reservation<br><span class="flow-label">RI/SP Buy</span></div>
+</div>
+<div class="flow-label" style="text-align:center">Optimization Executors</div>
+<div class="flow-arrow-down">v</div>
+<div class="flow-row">
+<div class="flow-box orange">Dashboard<br><span class="flow-label">JSON Export</span></div>
+<div class="flow-arrow">--&gt;</div>
+<div class="flow-box green">Slack Reporter</div>
+<div class="flow-box blue">Email Reporter</div>
+</div>
+<div class="flow-label" style="text-align:center">Reporting</div>
+</div>
+
+<h2>Component Breakdown</h2>
+<table>
+<thead><tr><th>Component</th><th>File</th><th>Purpose</th><th>Key Dependencies</th></tr></thead>
+<tbody>
+<tr><td>FinOps Agent</td><td><code>src/finops_agent.py</code></td><td>Main orchestrator coordinating the full pipeline</td><td>All sub-modules</td></tr>
+<tr><td>Configuration</td><td><code>src/config.py</code></td><td>Multi-cloud configuration with provider enum</td><td>pydantic, python-dotenv</td></tr>
+<tr><td>AWS Collector</td><td><code>src/collectors/aws_costs.py</code></td><td>AWS Cost Explorer, EC2, CloudWatch data collection</td><td>boto3</td></tr>
+<tr><td>Azure Collector</td><td><code>src/collectors/azure_costs.py</code></td><td>Azure Cost Management, Compute, Monitor</td><td>azure-mgmt-*, azure-identity</td></tr>
+<tr><td>GCP Collector</td><td><code>src/collectors/gcp_costs.py</code></td><td>GCP Billing (BigQuery), Compute Engine metrics</td><td>google-cloud-*</td></tr>
+<tr><td>Anomaly Detector</td><td><code>src/analyzers/anomaly_detector.py</code></td><td>Z-score anomaly detection + LLM explanations</td><td>langchain-openai</td></tr>
+<tr><td>Rightsizing</td><td><code>src/analyzers/rightsizing.py</code></td><td>Instance rightsizing recommendations</td><td>Cloud SDKs</td></tr>
+<tr><td>RI/SP Advisor</td><td><code>src/analyzers/reserved_advisor.py</code></td><td>Reserved instance and savings plan advisor</td><td>Cloud SDKs</td></tr>
+<tr><td>Waste Finder</td><td><code>src/analyzers/waste_finder.py</code></td><td>Idle/orphaned resource detection</td><td>Cloud SDKs</td></tr>
+<tr><td>Scheduler</td><td><code>src/optimizers/scheduler.py</code></td><td>Start/stop scheduling for non-production</td><td>Cloud SDKs</td></tr>
+<tr><td>Cleanup</td><td><code>src/optimizers/cleanup.py</code></td><td>Safe resource cleanup with dry-run mode</td><td>Cloud SDKs</td></tr>
+<tr><td>Reservation</td><td><code>src/optimizers/reservation.py</code></td><td>RI/SP purchase with approval workflow</td><td>Cloud SDKs</td></tr>
+</tbody>
+</table>
+
+<h2>Data Flow / Request Flow</h2>
+<div class="section-box">
+<ol style="padding-left:1.5rem;color:#ccc">
+<li><strong>Cost Collection</strong> -- Cloud-specific collectors pull cost data from AWS Cost Explorer, Azure Cost Management, and GCP BigQuery billing exports. Utilization metrics come from CloudWatch, Azure Monitor, and GCP Monitoring.</li>
+<li><strong>Anomaly Detection</strong> -- Historical cost data is analyzed using Z-score statistical methods. Anomalies exceeding the configurable threshold (default 20%) are flagged and explained via LLM.</li>
+<li><strong>Rightsizing Analysis</strong> -- CPU utilization data (default 7-day window) is compared against instance capacity. Resources below the idle threshold (default 5%) are flagged. Recommendations include target instance type with headroom buffer (default 20%).</li>
+<li><strong>Waste Detection</strong> -- Unattached EBS volumes, unused Elastic IPs, idle instances, and orphaned resources are identified across all enabled providers.</li>
+<li><strong>RI/SP Advisory</strong> -- Consistent usage patterns are analyzed to recommend reserved instance or savings plan purchases with projected monthly savings.</li>
+<li><strong>Optimization Execution</strong> -- Scheduler applies start/stop rules for tagged non-production resources. Cleanup removes waste with dry-run safety. Reservation purchaser previews before committing.</li>
+<li><strong>Reporting</strong> -- Results are compiled into dashboard JSON, Slack summaries, and HTML email reports with per-resource savings breakdowns.</li>
+</ol>
+</div>
+
+<h2>Security Controls</h2>
+<table>
+<thead><tr><th>Control</th><th>Implementation</th></tr></thead>
+<tbody>
+<tr><td>Credential Management</td><td>Environment variables; supports IAM roles, service principals, and service accounts</td></tr>
+<tr><td>Dry-Run Mode</td><td>ResourceCleanup defaults to <code>dry_run=True</code>; no destructive actions without explicit opt-in</td></tr>
+<tr><td>Purchase Approval</td><td>ReservationPurchaser requires <code>preview_purchase()</code> before <code>commit_purchase()</code></td></tr>
+<tr><td>Least Privilege</td><td>Requires only read permissions for analysis; write permissions only for optimization executors</td></tr>
+<tr><td>Input Validation</td><td>Pydantic v2 models for all configuration and report structures</td></tr>
+<tr><td>Audit Trail</td><td>All optimization actions are logged with timestamps, resource IDs, and outcomes</td></tr>
+</tbody>
+</table>
+
+<h2>Industry Adaptation</h2>
+<div class="industry-grid">
+<div class="industry-card"><h4>Healthcare</h4><p>HIPAA workload cost tracking. Separate cost analysis for PHI-processing infrastructure. Compliance-aware scheduling (no downtime for critical patient systems).</p></div>
+<div class="industry-card"><h4>Finance</h4><p>Trading workload cost optimization with low-latency constraints. PCI-DSS scope resource tracking. Regulatory compute reservation for burst capacity during market hours.</p></div>
+<div class="industry-card"><h4>Government</h4><p>FedRAMP/GovCloud cost analysis. IL4/IL5 workload cost segregation. Mandatory reserved capacity for continuity of operations (COOP) requirements.</p></div>
+<div class="industry-card"><h4>Retail</h4><p>Seasonal scaling cost forecasting. Black Friday/holiday burst capacity planning. Cost allocation by storefront, fulfillment, and analytics workloads.</p></div>
+<div class="industry-card"><h4>SaaS</h4><p>Per-tenant cost attribution. Multi-tier (free/pro/enterprise) infrastructure cost modeling. Usage-based pricing alignment with actual cloud spend.</p></div>
+</div>
+
+<h2>Production Readiness Checklist</h2>
+<ul class="checklist">
+<li>Configure cloud credentials for each enabled provider (AWS/Azure/GCP)</li>
+<li>Validate read-only access with a dry-run analysis</li>
+<li>Set OPENAI_API_KEY for anomaly explanations</li>
+<li>Tune anomaly threshold, idle CPU threshold, and rightsizing headroom</li>
+<li>Run initial analysis and review recommendations before enabling executors</li>
+<li>Test ResourceCleanup with <code>dry_run=True</code></li>
+<li>Configure Slack webhook and/or SMTP for automated reporting</li>
+<li>Set up cron/scheduled task for daily cost reports</li>
+<li>Tag non-production resources for scheduler rules</li>
+<li>Review RI/SP recommendations with finance team before enabling purchase</li>
+</ul>
+
+<h2>Configuration / Environment Variables</h2>
+<table class="env-table">
+<thead><tr><th>Variable</th><th>Required</th><th>Default</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>OPENAI_API_KEY</code></td><td>Yes</td><td>--</td><td>OpenAI API key for anomaly explanations</td></tr>
+<tr><td><code>FINOPS_PROVIDERS</code></td><td>No</td><td>aws</td><td>Comma-separated: aws, azure, gcp</td></tr>
+<tr><td><code>AWS_ACCESS_KEY_ID</code></td><td>No</td><td>--</td><td>AWS access key (or use IAM role/profile)</td></tr>
+<tr><td><code>AWS_SECRET_ACCESS_KEY</code></td><td>No</td><td>--</td><td>AWS secret key</td></tr>
+<tr><td><code>AWS_DEFAULT_REGION</code></td><td>No</td><td>us-east-1</td><td>Default AWS region</td></tr>
+<tr><td><code>AZURE_SUBSCRIPTION_ID</code></td><td>No</td><td>--</td><td>Azure subscription ID</td></tr>
+<tr><td><code>AZURE_TENANT_ID</code></td><td>No</td><td>--</td><td>Azure AD tenant ID</td></tr>
+<tr><td><code>AZURE_CLIENT_ID</code></td><td>No</td><td>--</td><td>Azure service principal client ID</td></tr>
+<tr><td><code>AZURE_CLIENT_SECRET</code></td><td>No</td><td>--</td><td>Azure service principal secret</td></tr>
+<tr><td><code>GCP_PROJECT_ID</code></td><td>No</td><td>--</td><td>GCP project ID</td></tr>
+<tr><td><code>GCP_BILLING_ACCOUNT_ID</code></td><td>No</td><td>--</td><td>GCP billing account ID</td></tr>
+<tr><td><code>GOOGLE_APPLICATION_CREDENTIALS</code></td><td>No</td><td>--</td><td>Path to GCP service account JSON</td></tr>
+<tr><td><code>SLACK_WEBHOOK_URL</code></td><td>No</td><td>--</td><td>Slack webhook for cost reports</td></tr>
+<tr><td><code>SMTP_HOST</code></td><td>No</td><td>--</td><td>SMTP server for email reports</td></tr>
+</tbody>
+</table>
+
+<h2>Deployment</h2>
+<div class="section-grid">
+<div class="section-box">
+<h3>Local Development</h3>
+<pre><code>git clone https://github.com/your-org/ai-finops-optimization-agent.git
+cd ai-finops-optimization-agent
+python -m venv .venv
+source .venv/bin/activate
+pip install -e ".[all-clouds,dev]"
+cp .env.example .env
+python -m examples.daily_report</code></pre>
+</div>
+<div class="section-box">
+<h3>Production</h3>
+<pre><code># Install with specific cloud support:
+pip install -e ".[aws]"        # AWS only
+pip install -e ".[azure]"      # Azure only
+pip install -e ".[all-clouds]" # All providers
+
+# Schedule daily reports via cron:
+# 0 8 * * * /path/to/.venv/bin/python -m examples.daily_report</code></pre>
+</div>
+</div>
+
+<h2>Links</h2>
+<table>
+<tbody>
+<tr><td>Repository</td><td><a href="https://github.com/your-org/ai-finops-optimization-agent">github.com/your-org/ai-finops-optimization-agent</a></td></tr>
+<tr><td>README</td><td><a href="../README.md">README.md</a></td></tr>
+<tr><td>Changelog</td><td><a href="../CHANGELOG.md">CHANGELOG.md</a></td></tr>
+<tr><td>License</td><td><a href="../LICENSE">MIT License</a></td></tr>
+</tbody>
+</table>
+
+<footer>
+Generated on 2026-03-15 | ai-finops-optimization-agent v0.1.0 | Architecture Documentation
+</footer>
+
+</div>
+</body>
+</html>
