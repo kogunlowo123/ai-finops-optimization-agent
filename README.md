@@ -1,3 +1,7 @@
+![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
+![GitHub release](https://img.shields.io/github/v/release/kogunlowo123/ai-finops-optimization-agent)
+
 # AI FinOps Optimization Agent
 
 A Python agent that analyzes cloud costs across AWS, Azure, and GCP, identifies optimization opportunities including rightsizing, reserved instances, and waste elimination, and can execute recommendations with built-in safety controls.
